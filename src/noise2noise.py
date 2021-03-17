@@ -138,7 +138,7 @@ class Noise2Noise(object):
         clean_imgs = []
 
         # Create directory for generated images
-        result_dir = os.path.dirname(self.p.data)
+        result_dir = os.path.dirname(self.p.results)
         save_path = os.path.join(result_dir, 'DL-generated')
         if not os.path.isdir(save_path):
             os.mkdir(save_path)
@@ -156,7 +156,7 @@ class Noise2Noise(object):
 
         # Squeeze tensors
         source_imgs = [t.squeeze(0) for t in source_imgs]
-        img_generated_list = [t.squeeze(0) for t in img_generated]
+        img_generated_list = [t.squeeze(0) for t in img_generated_list]
         clean_imgs = [t.squeeze(0) for t in clean_imgs]
 
         # Create montage and save images

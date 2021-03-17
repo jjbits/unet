@@ -115,10 +115,6 @@ def psnr(input, target):
 
 
 def create_montage(img_name, save_path, source_t, generated_t, clean_t, show):
-    """Creates montage for easy comparison."""
-
-    fig, ax = plt.subplots(1, 3, figsize=(9, 3))
-    fig.canvas.set_window_title(img_name.capitalize()[:-4])
 
     # Bring tensors to CPU
     source_t = source_t.cpu().narrow(0, 0, 3)
@@ -129,26 +125,27 @@ def create_montage(img_name, save_path, source_t, generated_t, clean_t, show):
     generated = tvF.to_pil_image(torch.clamp(generated_t, 0, 1))
     clean = tvF.to_pil_image(clean_t)
 
-    # Build image montage
-    titles = ['Input',
-              'Generated',
-              'Ground Truth']
-    zipped = zip(titles, [source, generated, clean])
-    for j, (title, img) in enumerate(zipped):
-        ax[j].imshow(img)
-        ax[j].set_title(title)
-        ax[j].axis('off')
-
-    # Open pop up window, if requested
-    if show > 0:
-        plt.show()
+    """if show != 0:
+        fig, ax = plt.subplots(1, 3, figsize=(9, 3))
+        fig.canvas.set_window_title(img_name.capitalize()[:-4])
+        # Build image montage
+        titles = ['Input',
+                  'Generated',
+                  'Ground Truth']
+        zipped = zip(titles, [source, generated, clean])
+        for j, (title, img) in enumerate(zipped):
+            ax[j].imshow(img)
+            ax[j].set_title(title)
+            ax[j].axis('off')
+        plt.show()"""
 
     # Save to files
     fname = os.path.splitext(img_name)[0]
     source.save(os.path.join(save_path, f'{fname}-original.png'))
     generated.save(os.path.join(save_path, f'{fname}-generated.png'))
     clean.save(os.path.join(save_path, f'{fname}-target.png'))
-    fig.savefig(os.path.join(save_path, f'{fname}-montage.png'), bbox_inches='tight')
+    if show != 0:
+        fig.savefig(os.path.join(save_path, f'{fname}-montage.png'), bbox_inches='tight')
 
 
 class AvgMeter(object):

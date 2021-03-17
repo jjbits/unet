@@ -20,8 +20,8 @@ def parse_args():
     parser.add_argument('--ckpt-save-path', help='checkpoint save path', default='./../saved-model')
     parser.add_argument('--ckpt-overwrite', help='overwrite model checkpoint on save', action='store_true')
     parser.add_argument('--report-interval', help='batch report interval', default=1, type=int)
-    parser.add_argument('-ts', '--train-size', help='size of train dataset', default=1, type=int)
-    parser.add_argument('-vs', '--valid-size', help='size of valid dataset', default=1, type=int)
+    parser.add_argument('-ts', '--train-size', help='size of train dataset', default=1000, type=int)
+    parser.add_argument('-vs', '--valid-size', help='size of valid dataset', default=20, type=int)
 
     # Training hyperparameters
     parser.add_argument('-lr', '--learning-rate', help='learning rate', default=0.001, type=float)

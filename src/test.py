@@ -17,11 +17,14 @@ def parse_args():
     parser = ArgumentParser(description='U-Net Supersampler.')
 
     # test parameters
-    parser.add_argument('-d', '--data', help='test result path', default="./../test_result/")
-    parser.add_argument('--load-ckpt', help='load model checkpoint')
+    parser.add_argument('--results', help='test result path', default="/mnt/data/supersample_data/test_result/")
+    parser.add_argument('--data', help='data path', default="/mnt/data/supersample_data/105_samples/")
+    parser.add_argument('--load-ckpt', help='load model checkpoint', default="/mnt/data/Dropbox/cprojects/unet/saved-model/supersample/n2n-epoch1-0.00008034.pt")
+    parser.add_argument('-b', '--batch-size', help='minibatch size', default=1, type=int)
     parser.add_argument('--show-output', help='pop up window to display outputs', default=0, type=int)
-    parser.add_argument('--cuda', help='use cuda', action='store_true')
-    parser.add_argument('-c', '--crop-size', help='image crop size', default=256, type=int)
+    parser.add_argument('--cuda', help='use cuda', action='store_true', default=False)
+    parser.add_argument('-c', '--crop-size', help='image crop size', default=0, type=int)
+    parser.add_argument('--test-size', help='size of test dataset', default=100, type=int)
 
     return parser.parse_args()
 
@@ -32,12 +35,10 @@ if __name__ == '__main__':
     # Parse test parameters
     params = parse_args()
 
-    datapath = "/mnt/data/supersample_data/"
-
     # Initialize model and test
     n2n = Noise2Noise(params, trainable=False)
     params.redux = False
     params.clean_targets = True
-    test_loader = load_supersample_dataset(datapath + 'new_test/input', datapath + 'new_test/target', 1, params, shuffled=False, single=True)
+    test_loader = load_supersample_dataset(params.data + 'input', params.data + 'target', params.test_size, params, shuffled=False, single=False)
     n2n.load_model(params.load_ckpt)
     n2n.test(test_loader, show=params.show_output)
