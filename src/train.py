@@ -17,11 +17,12 @@ def parse_args():
 
     # Data parameters
     parser.add_argument('--load-ckpt', help='load model checkpoint', default=None)
+    parser.add_argument('--data', help='data path', default="/mnt/data/supersample_data/")
     parser.add_argument('--ckpt-save-path', help='checkpoint save path', default='./../saved-model')
     parser.add_argument('--ckpt-overwrite', help='overwrite model checkpoint on save', action='store_true')
     parser.add_argument('--report-interval', help='batch report interval', default=1, type=int)
-    parser.add_argument('-ts', '--train-size', help='size of train dataset', default=1000, type=int)
-    parser.add_argument('-vs', '--valid-size', help='size of valid dataset', default=20, type=int)
+    parser.add_argument('-ts', '--train-size', help='size of train dataset', default=5000, type=int)
+    parser.add_argument('-vs', '--valid-size', help='size of valid dataset', default=100, type=int)
 
     # Training hyperparameters
     parser.add_argument('-lr', '--learning-rate', help='learning rate', default=0.001, type=float)
@@ -30,7 +31,7 @@ def parse_args():
     parser.add_argument('-e', '--nb-epochs', help='number of epochs', default=1, type=int)
     parser.add_argument('-l', '--loss', help='loss function', choices=['l1', 'l2', 'sampling'], default='sampling', type=str)
     parser.add_argument('--cuda', help='use cuda', action='store_true')
-    parser.add_argument('--plot-stats', help='plot stats after every epoch', action='store_true')
+    parser.add_argument('--plot-stats', help='plot stats after every epoch', action='store_true', default=True)
 
     parser.add_argument('-c', '--crop-size', help='random crop size', default=0, type=int)
     parser.add_argument('--clean-targets', help='use clean targets for training', action='store_true')
@@ -44,11 +45,9 @@ if __name__ == '__main__':
     # Parse training parameters
     params = parse_args()
 
-    datapath = "/mnt/data/supersample_data/"
-
     # Train/valid datasets
-    train_loader = load_supersample_dataset(datapath + 'train/input', datapath + 'train/target', params.train_size, params, shuffled=True, single=False)
-    valid_loader = load_supersample_dataset(datapath + 'valid/input', datapath + 'valid/target', params.valid_size, params, shuffled=False, single=False)
+    train_loader = load_supersample_dataset(params.data + 'train/input', params.data + 'train/target', params.train_size, params, shuffled=True, single=False)
+    valid_loader = load_supersample_dataset(params.data + 'valid/input', params.data + 'valid/target', params.valid_size, params, shuffled=False, single=False)
 
     # Initialize model and train
     n2n = Noise2Noise(params, trainable=True)

@@ -17,9 +17,9 @@ def parse_args():
     parser = ArgumentParser(description='U-Net Supersampler.')
 
     # test parameters
-    parser.add_argument('--results', help='test result path', default="/mnt/data/supersample_data/test_result/")
-    parser.add_argument('--data', help='data path', default="/mnt/data/supersample_data/105_samples/")
-    parser.add_argument('--load-ckpt', help='load model checkpoint', default="/mnt/data/Dropbox/cprojects/unet/saved-model/supersample/n2n-epoch1-0.00008034.pt")
+    parser.add_argument('--results', help='test result path', default="../test_result/")
+    parser.add_argument('--data', help='data path', default="../one_test_28/")
+    parser.add_argument('--load-ckpt', help='load model checkpoint', default="../saved-model/supersample-5000/n2n-epoch1-0.00000637.pt")
     parser.add_argument('-b', '--batch-size', help='minibatch size', default=1, type=int)
     parser.add_argument('--show-output', help='pop up window to display outputs', default=0, type=int)
     parser.add_argument('--cuda', help='use cuda', action='store_true', default=False)
